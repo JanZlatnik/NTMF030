@@ -1,0 +1,15 @@
+# Grid settings
+rmin = 0.0          # [au] grid starting point
+rmax = 2.0          # [au] grid ending point
+nr = 3000           # [1]  number of grid points
+
+# Energy settings
+emin = 0.0          # [au] minimal energy
+emax = 50.0         # [au] maximal energy
+de = 0.05           # [au] energy spacing
+
+# Calculation settings
+lmax = 3            # [1] maximal partial wave calculated
+
+# Bound states settings
+bound_ne = 1000      # [1] sparcing number
