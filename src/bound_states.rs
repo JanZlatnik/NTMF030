@@ -4,12 +4,13 @@ BOUND STATES MODULE
 
 Contains: Calculation of bound states using Numerov method
 
-Last revision: 02/12/2024 by JZ
+Last revision: 07/02/2025 by JZ
 
 */
 use nalgebra::{DMatrix, DVector};
 use crate::core::{console, HBAR};
 use crate::math::{Grid, Integrable};
+use crate::math::INTMethod::Simpson;
 
 pub fn calculate_derivative <F: Fn(f64) -> f64> (
     grid:           &Grid,
@@ -43,7 +44,7 @@ pub fn calculate_derivative <F: Fn(f64) -> f64> (
     psi_r.shrink_to_fit();
     let i_break = psi_r.len() - 1;
     let norm_r = 1.0/psi_r[i_break-1];
-    psi_r.iter_mut().for_each(|x| *x *= norm_r);;
+    psi_r.iter_mut().for_each(|x| *x *= norm_r);
     let mut psi_i= vec![0.0;grid.n-psi_r.len()+3];
     psi_i[0] = (-(-k2[grid.n-1]).sqrt()*grid.points[grid.n-1]).exp();
     psi_i[1] = (-(-k2[grid.n-2]).sqrt()*grid.points[grid.n-2]).exp();
@@ -61,13 +62,13 @@ pub fn calculate_derivative <F: Fn(f64) -> f64> (
         let term2 = 1.0 + grid.d.powi(2) / 12.0 * k2[grid.n-2-k];
         let term1 = 1.0 - 5.0 * grid.d.powi(2) / 12.0 * k2[grid.n-1-k];
         let term0 = 1.0 + grid.d.powi(2) / 12.0 * k2[grid.n-k];
-        psi_i[k+1] = ((2.0 * term1 * psi_i[k] - term0 * psi_i[k-1]) / term2);
+        psi_i[k+1] = (2.0 * term1 * psi_i[k] - term0 * psi_i[k-1]) / term2;
     }
     let norm_i = 1.0/psi_i[grid.n-i_break];
     psi_i.iter_mut().for_each(|x| *x *= norm_i);
     psi_i.reverse();
 
-    if psi_r[i_break-1] != psi_i[1] {
+    if (psi_r[i_break-1] - psi_i[1]).abs() > 1e-15  {
         console(&format!("[ERROR]: psi_r and psi_i are not correctly normalized at energy {} au.",&e));
     }
 
@@ -75,7 +76,7 @@ pub fn calculate_derivative <F: Fn(f64) -> f64> (
     psi_i.drain(0..3);
     psi_r.extend(psi_i);
     let psi = DVector::from_vec(psi_r);
-    (derivative_diff, psi)
+    (derivative_diff.tanh(), psi)
 }
 
 
@@ -99,7 +100,7 @@ pub fn calculate_bound_states(
         .reduce(f64::min)
         .unwrap_or(-f64::INFINITY);
 
-    let emax = effective_potential[effective_potential.len() - 1];
+    let emax = potential(10.0 * grid.end) + (l * (l + 1)) as f64 / (2.0 * mass * (10.0 * grid.end).powi(2));
     console(&format!("Searching for bound states in energy range [{emin},{emax}] au"));
 
     let energies = Grid::new_n(emin,emax,ne);
@@ -122,7 +123,7 @@ pub fn calculate_bound_states(
             let mut e_right = energies.points[i + 1];
             let mut converged = false;
 
-            for _ in 0..1000 {
+            for _ in 0..50 {
                 let e_mid = (e_left + e_right) / 2.0;
                 let (derivative_mid, _) = calculate_derivative(
                     &grid,
@@ -159,7 +160,7 @@ pub fn calculate_bound_states(
             l,
             mass
         );
-        let norm = psi.square_integrate(grid.d);
+        let norm = psi.square_integrate(grid.d,Simpson);
         let normalized_psi =  psi * (1.0 / norm.sqrt());
         eigenfunctions.row_mut(i).copy_from_slice(&normalized_psi.as_slice());
     }

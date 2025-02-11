@@ -4,15 +4,12 @@ SCATTERING MODULE
 
 Contains: Scattering in general potential, eigenstates calculation
 
-Last revision: 26/11/2024 by JZ
+Last revision: 07/02/2025 by JZ
 
 */
-use std::fs::File;
-use std::io;
 use nalgebra::{DMatrix, DVector};
 use crate::core::{console, HBAR, PI};
 use crate::math::{riccati_bessel, riccati_neumann, Grid};
-use io::Write;
 
 pub fn calculate_phase_shift(
     grid:           &Grid,
@@ -51,7 +48,7 @@ pub fn calculate_phase_shift(
             let r1 = grid.points[i1];
 
             let g = psi[i1]/psi[i2];
-            if g.is_nan() {println!("[ERROR]: g is NaN")}
+            if g.is_nan() {console(&format!("[ERROR]: g is NaN for e = {} a.u. and l = {}",e,l))}
             let k = (2.0 * mass * e).sqrt() / HBAR;
 
             let delta = ((riccati_bessel(l,k*r1) - g * riccati_bessel(l,k*r2)) / (g * riccati_neumann(l,k*r2) - riccati_neumann(l,k*r1))).atan();

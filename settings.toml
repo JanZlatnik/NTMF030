@@ -1,15 +1,35 @@
-# Grid settings
-rmin = 0.0          # [au] grid starting point
-rmax = 2.0          # [au] grid ending point
-nr = 3000           # [1]  number of grid points
+# Grid settings Task 1
+rmin1 = 0.0          # [au] grid starting point
+rmax1 = 2.0          # [au] grid ending point
+nr1 = 3000           # [1]  number of grid points
 
-# Energy settings
-emin = 0.0          # [au] minimal energy
-emax = 50.0         # [au] maximal energy
-de = 0.05           # [au] energy spacing
+# Energy settings Task 1
+emin1 = 0.0          # [au] minimal energy
+emax1 = 50.0         # [au] maximal energy
+de1 = 0.05           # [au] energy spacing
 
-# Calculation settings
-lmax = 3            # [1] maximal partial wave calculated
+# Grid settings Task 2
+rmin2 = 0.0          # [au] grid starting point
+rmax2 = 10.0         # [au] grid ending point
+nr2 = 3000           # [1]  number of grid points
+
+# Energy settings Task 2
+emin2 = 0.0          # [au] minimal energy
+emax2 = 1.0          # [au] maximal energy
+de2 = 0.0005         # [au] energy spacing
+
+# Calculation settings Task 1
+ls1 = [0,1,2,3]                         # [1] partial waves calculated
+mass1 = 1.0                             # [au] mass
+strength = [1.0, 4.7, 4.8, 4.9, 10.0]   # [au] potential strenght
+
+# Calculation settings Task 2
+ls2 = [0,1]          # [1] partial waves calculated
+mass2 = 1.0          # [au] mass
 
 # Bound states settings
 bound_ne = 1000      # [1] sparcing number
+bound_mult = 10      # [1] mult for grid conputation of boundstates
+
+# Other settings
+zero_limit = 100    # [1] number of cross-sections calculated for the zero limit

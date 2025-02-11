@@ -7,10 +7,8 @@ Contains: Basic mathematical and physical constants, settings initialization, gr
 Last revision: 26/11/2024 by JZ
 
 */
-use std::fs::File;
 use std::path::Path;
 use chrono::Local;
-use nalgebra::DVector;
 use serde::Deserialize;
 
 // Useful physical & mathematical constants \\
@@ -37,18 +35,41 @@ pub fn console(message: &str) {
 // Settings initialization \\
 #[derive(Deserialize,Debug)]
 pub struct Settings {
-    // Grid settings
-    pub rmin: f64,
-    pub rmax: f64,
-    pub nr:   usize,
-    // Energy settings
-    pub emin:       f64,
-    pub emax:       f64,
-    pub de:         f64,
-    // Calculation settings
-    pub lmax:      usize,
+    // Grid settings Task 1
+    pub rmin1: f64,
+    pub rmax1: f64,
+    pub nr1: usize,
+
+    // Energy settings Task 1
+    pub emin1: f64,
+    pub emax1: f64,
+    pub de1: f64,
+
+    // Grid settings Task 2
+    pub rmin2: f64,
+    pub rmax2: f64,
+    pub nr2: usize,
+
+    // Energy settings Task 2
+    pub emin2: f64,
+    pub emax2: f64,
+    pub de2: f64,
+
+    // Calculation settings Task 1
+    pub ls1: Vec<usize>,
+    pub mass1: f64,
+    pub strength: Vec<f64>,
+
+    // Calculation settings Task 2
+    pub ls2: Vec<usize>,
+    pub mass2: f64,
+
     // Bound states settings
-    pub bound_ne:   usize,
+    pub bound_ne: usize,
+    pub bound_mult: usize,
+
+    // Other settings
+    pub zero_limit: usize,
 }
 
 impl Settings {
@@ -56,7 +77,7 @@ impl Settings {
         // read settings
         let content = std::fs::read_to_string(path)
             .map_err(|e| format!("Failed to read settings file: {}", e))?;
-        let mut settings: Settings = toml::from_str(&content)
+        let settings: Settings = toml::from_str(&content)
             .map_err(|e| format!("Failed to parse TOML: {}", e))?;
 
         Ok(settings)
