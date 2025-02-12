@@ -7,13 +7,13 @@ from matplotlib.ticker import AutoMinorLocator
 
 
 # Nastavení základních vlastností grafu
-name = '4.8_wavefunction_2_1'
+name = '4.8_wavefunction_0_2'
 aspect_ratio = 'square'
-filenames = [r"d:\Univerzita\Quantum scattering theory\Potential_scattering\Task 1\alpha = 4.8\Eigenfunctions\eigenfunctions_l=2.txt"]
+filenames = [r"d:\Univerzita\Quantum scattering theory\Potential_scattering\Task 1\alpha = 4.8\Eigenfunctions\eigenfunctions_l=0.txt"]
 x_column = 1
-y_columns = [2]
+y_columns = [3]
 show_legend = True  
-legend_title = r"$l=2$"  
+legend_title = r"$l=0$"  
 legend_frame = False 
 
 # Nastavení velikostí
@@ -26,7 +26,7 @@ SIZE = 6
 # Legendy, popisky, barvy a styly čar s escape sekvencemi pro LaTeX
 X_axis = r'Radial distance$\,(a_0)$'
 Y_axis = r'Wavefunction'
-legends = [[r"$E \approx -0.95\,\mathrm{Ha} $"],[0],[0],[0]]
+legends = [[r"$E \approx -0.0617\,\mathrm{Ha} $"],[0],[0],[0]]
 labels = [[0,0,0,0]]
 labels_position = [[(2.63,10**(-1.7)),(1.4, 10**(-1.5)),(1.4, 10**(-3.1)),(2.2, 10**(-1.03))]]  
 colors = [['red','red','blue','purple']]
